@@ -20,39 +20,39 @@ public class WatchListRepository(AppDbContext context):IWatchListRepository
 
         return await query.ToListAsync();
     }
-
+    
     public async Task AddToWatchList(WatchList watchList)
     {
         var movie = await _context.Movies
             .FirstOrDefaultAsync(m => m.ExternalMovieId == watchList.MovieId);
         
-        
         if (movie == null)
         {
             movie = new Movie
             {
-                ExternalMovieId =watchList.MovieId,
-                // Title = dto.Title
+                ExternalMovieId = watchList.MovieId
             };
 
             await _context.Movies.AddAsync(movie);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); 
         }
-
-
-  
+        
+        watchList.MovieId = movie.Id; 
+        
         await _context.WatchLists.AddAsync(watchList);
         await _context.SaveChangesAsync();
     }
 
-    public async Task RemoveFromWatchList(int id, int userId)
+    public async Task<bool> RemoveFromWatchList(int id, int userId)
     {
         var removeWatchList = await _context.WatchLists.FirstOrDefaultAsync(w => w.Id == id && w.UserId == userId);
         if (removeWatchList != null)
         {
             _context.WatchLists.Remove(removeWatchList);
             await _context.SaveChangesAsync();
+            return true;
         }
+        return false;
 
     }
     
@@ -68,5 +68,15 @@ public class WatchListRepository(AppDbContext context):IWatchListRepository
         await _context.SaveChangesAsync();
         return existing;
         
+    }
+
+    public async Task<WatchList> GetWatchListById(int id)
+    {
+        return await _context.WatchLists.FirstOrDefaultAsync(w => w.Id == id) ?? new WatchList();
+    }
+    
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }

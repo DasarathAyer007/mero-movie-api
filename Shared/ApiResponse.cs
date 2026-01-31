@@ -13,7 +13,7 @@ public class ApiResponse<T>
         bool success,
         int statusCode,
         string message,
-        T data = default!,
+        T data ,
         object? errors = null)
     {
         Success = success;

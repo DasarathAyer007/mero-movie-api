@@ -49,6 +49,7 @@ public class MediaService(IMovieRepository movieRepository) : IMediaService
             Results  = movies.Results!=null ? movies.Results.Select(x => new MediaListResponse
             {
                 Id = x.Id,
+                Adult = x.Adult,
                 Overview = x.Overview,
                 Popularity = x.Popularity,
                 ReleaseDate = x.ReleaseDate,

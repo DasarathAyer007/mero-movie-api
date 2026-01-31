@@ -8,8 +8,13 @@ public interface IWatchListRepository
     
     Task AddToWatchList(WatchList watchList);
     
-    Task RemoveFromWatchList(int id ,int userId);
+    Task<bool> RemoveFromWatchList(int id ,int userId);
     
     Task<WatchList> UpdateWatchList(WatchList watchList,int userId);
     
+    Task<WatchList> GetWatchListById(int id);
+
+    Task SaveChangesAsync();
+
+
 }

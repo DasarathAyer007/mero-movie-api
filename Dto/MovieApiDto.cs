@@ -4,7 +4,8 @@ namespace mero_movie_api.Dto;
 
 public class MovieApiDto
 {
-    // public bool Adult { get; set; }
+    [JsonPropertyName("adult")]
+    public bool Adult { get; set; }
     
     [JsonPropertyName("id")]
     public int Id { get; init; }
