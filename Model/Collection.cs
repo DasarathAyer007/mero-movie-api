@@ -14,6 +14,5 @@ public class Collection : BaseEntity
 
     [MaxLength(100)] public string? Description { get; set; }
 
-
-    public ICollection<Movie> Movie { get; set; } = new List<Movie>();
+    public ICollection<Media> Media { get; set; } = new List<Media>();
 }

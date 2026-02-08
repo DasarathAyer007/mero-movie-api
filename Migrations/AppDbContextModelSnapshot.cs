@@ -19,19 +19,19 @@ namespace mero_movie_api.Migrations
                 .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("CollectionMovie", b =>
+            modelBuilder.Entity("CollectionMedia", b =>
                 {
                     b.Property<int>("CollectionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MovieId")
+                    b.Property<int>("MediaId")
                         .HasColumnType("int");
 
-                    b.HasKey("CollectionId", "MovieId");
+                    b.HasKey("CollectionId", "MediaId");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MediaId");
 
-                    b.ToTable("CollectionMovie");
+                    b.ToTable("CollectionMedia");
                 });
 
             modelBuilder.Entity("mero_movie_api.Model.Collection", b =>
@@ -65,11 +65,19 @@ namespace mero_movie_api.Migrations
                     b.ToTable("Collections");
                 });
 
-            modelBuilder.Entity("mero_movie_api.Model.Movie", b =>
+            modelBuilder.Entity("mero_movie_api.Model.Media", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<bool>("Adult")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("BackdropPath")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime(6)");
@@ -77,8 +85,38 @@ namespace mero_movie_api.Migrations
                     b.Property<int>("ExternalMovieId")
                         .HasColumnType("int");
 
+                    b.PrimitiveCollection<string>("GenreIds")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("MediaType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("OriginalLanguage")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)");
+
+                    b.Property<string>("Overview")
+                        .HasMaxLength(400)
+                        .HasColumnType("varchar(400)");
+
+                    b.Property<double>("Popularity")
+                        .HasColumnType("double");
+
+                    b.Property<string>("PosterPath")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
+                    b.Property<string>("ReleaseDate")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Title")
                         .HasMaxLength(200)
@@ -98,21 +136,21 @@ namespace mero_movie_api.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("MovieId")
+                    b.Property<int>("MediaId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("MovieRating")
+                    b.Property<decimal>("MediaRating")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MediaId");
 
                     b.HasIndex("UserId");
 
@@ -128,11 +166,11 @@ namespace mero_movie_api.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ReviewText")
                         .IsRequired()
@@ -143,11 +181,40 @@ namespace mero_movie_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MediaId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("mero_movie_api.Model.TvShowDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Episode")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Season")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MediaId")
+                        .IsUnique();
+
+                    b.ToTable("TvShowDetail");
                 });
 
             modelBuilder.Entity("mero_movie_api.Model.User", b =>
@@ -204,11 +271,11 @@ namespace mero_movie_api.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("Progress")
                         .HasColumnType("int");
@@ -226,15 +293,15 @@ namespace mero_movie_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MovieId");
+                    b.HasIndex("MediaId");
 
-                    b.HasIndex("UserId", "MovieId")
+                    b.HasIndex("UserId", "MediaId")
                         .IsUnique();
 
                     b.ToTable("WatchLists");
                 });
 
-            modelBuilder.Entity("CollectionMovie", b =>
+            modelBuilder.Entity("CollectionMedia", b =>
                 {
                     b.HasOne("mero_movie_api.Model.Collection", null)
                         .WithMany()
@@ -242,9 +309,9 @@ namespace mero_movie_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("mero_movie_api.Model.Movie", null)
+                    b.HasOne("mero_movie_api.Model.Media", null)
                         .WithMany()
-                        .HasForeignKey("MovieId")
+                        .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -252,7 +319,7 @@ namespace mero_movie_api.Migrations
             modelBuilder.Entity("mero_movie_api.Model.Collection", b =>
                 {
                     b.HasOne("mero_movie_api.Model.User", "User")
-                        .WithMany()
+                        .WithMany("Collections")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -262,9 +329,9 @@ namespace mero_movie_api.Migrations
 
             modelBuilder.Entity("mero_movie_api.Model.Rating", b =>
                 {
-                    b.HasOne("mero_movie_api.Model.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
+                    b.HasOne("mero_movie_api.Model.Media", "Media")
+                        .WithMany("Ratings")
+                        .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -274,16 +341,16 @@ namespace mero_movie_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Movie");
+                    b.Navigation("Media");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("mero_movie_api.Model.Review", b =>
                 {
-                    b.HasOne("mero_movie_api.Model.Movie", "Movie")
-                        .WithMany()
-                        .HasForeignKey("MovieId")
+                    b.HasOne("mero_movie_api.Model.Media", "Media")
+                        .WithMany("Reviews")
+                        .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -293,35 +360,59 @@ namespace mero_movie_api.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Movie");
+                    b.Navigation("Media");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("mero_movie_api.Model.TvShowDetail", b =>
+                {
+                    b.HasOne("mero_movie_api.Model.Media", "Media")
+                        .WithOne("TvShow")
+                        .HasForeignKey("mero_movie_api.Model.TvShowDetail", "MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("mero_movie_api.Model.WatchList", b =>
                 {
-                    b.HasOne("mero_movie_api.Model.Movie", "Movie")
+                    b.HasOne("mero_movie_api.Model.Media", "Media")
                         .WithMany()
-                        .HasForeignKey("MovieId")
+                        .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("mero_movie_api.Model.User", "User")
-                        .WithMany()
+                        .WithMany("WatchLists")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Movie");
+                    b.Navigation("Media");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("mero_movie_api.Model.User", b =>
+            modelBuilder.Entity("mero_movie_api.Model.Media", b =>
                 {
                     b.Navigation("Ratings");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("TvShow");
+                });
+
+            modelBuilder.Entity("mero_movie_api.Model.User", b =>
+                {
+                    b.Navigation("Collections");
+
+                    b.Navigation("Ratings");
+
+                    b.Navigation("Reviews");
+
+                    b.Navigation("WatchLists");
                 });
 #pragma warning restore 612, 618
         }

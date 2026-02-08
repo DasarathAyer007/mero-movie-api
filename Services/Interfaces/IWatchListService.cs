@@ -8,8 +8,12 @@ public interface IWatchListService
 {
     Task<List<WatchListResponse>> MyWatchList(int userId, WatchStatus? status);
 
-    Task<bool> AddMyWatchList(CreateWatchListDto watchList,int userId);
-    
+    Task<List<int>> WatchListIds(int userId);
+
+    Task<List<WatchListResponse>> WatchListsMedia(int userId);
+
+    Task<bool> AddMyWatchList(CreateWatchListDto watchList, int userId);
+
     Task<bool> DeleteMyWatchList(int id, int userId);
 
     Task<WatchListResponse> UpdateMyWatchList(UpdateWatchListDto watchList, int userId);

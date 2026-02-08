@@ -27,4 +27,6 @@ public class MediaListResponse
     public int VoteCount { get; set; }
     
     public string MediaType { get; set; }=string.Empty;
+    
+    public string BackdropPath { get;set; }=string.Empty;
 }

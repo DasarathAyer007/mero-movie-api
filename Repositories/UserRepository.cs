@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace mero_movie_api.Repositories;
 
-public class UserRepository(AppDbContext context):IUserRepository
+public class UserRepository(AppDbContext context) : IUserRepository
 {
-    private readonly AppDbContext _context=context;
+    private readonly AppDbContext _context = context;
+
     public async Task<User?> GetUserByID(int id)
     {
-        
         return await _context.Users.FindAsync(id);
     }
 
@@ -42,6 +42,6 @@ public class UserRepository(AppDbContext context):IUserRepository
         };
         await _context.AddAsync(newUser);
         await _context.SaveChangesAsync();
-        return newUser ;
+        return newUser;
     }
 }

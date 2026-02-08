@@ -50,6 +50,17 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("AllowFrontend", policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+        });
+    });
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -68,7 +79,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var app = builder.Build();
 
-
+app.UseCors("AllowFrontend"); 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -77,7 +88,8 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.UseHttpsRedirection();
+
+// app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 

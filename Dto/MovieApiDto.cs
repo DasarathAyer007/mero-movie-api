@@ -47,5 +47,11 @@ public class MovieApiDto
     
     [JsonPropertyName("media_type")]
     public string MediaType { get; set; }=string.Empty;
+    
+    [JsonPropertyName("number_of_episodes")]
+    public int? TotalEpisodes { get; set; }
+    
+    [JsonPropertyName("number_of_seasons")]
+    public int? TotalSeasons { get; set; }
 
 }

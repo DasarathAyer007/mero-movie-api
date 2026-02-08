@@ -26,6 +26,22 @@ public class WatchListController(IWatchListService watchListService, ICurrentUse
         ));
     }
 
+    [HttpGet("ids")]
+    [Authorize]
+    public async Task<ActionResult<ApiResponse<List<List<int>>>>> WatchListIds()
+    {
+        return Ok(ApiResponse<List<int>>.SuccessResponse(await _watchListService.WatchListIds(_currentUser.UserId)));
+    }
+
+    [HttpGet("mywatchlist")]
+    [Authorize]
+    public async Task<ActionResult<ApiResponse<List<WatchListResponse>>>> WatchListMedia()
+    {
+        return Ok(
+            ApiResponse<List<WatchListResponse>>.SuccessResponse(
+                await _watchListService.WatchListsMedia(_currentUser.UserId)));
+    }
+
     [HttpPost("add")]
     [Authorize]
     public async Task<ActionResult<ApiResponse<bool>>> Add([FromBody] CreateWatchListDto watchList)
@@ -46,7 +62,7 @@ public class WatchListController(IWatchListService watchListService, ICurrentUse
         ));
     }
 
-    [HttpDelete("delete/{id}")]
+    [HttpDelete("remove/{id}")]
     [Authorize]
     public async Task<ActionResult<ApiResponse<bool>>> Remove(int id)
     {

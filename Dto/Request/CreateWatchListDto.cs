@@ -6,6 +6,8 @@ public class CreateWatchListDto
 {
     public int UserId { get; set; }
     public int MovieId { get; set; }
+    
+    public string Mediatype { get; set; }=String.Empty;
     public WatchStatus Status { get; set; } = WatchStatus.PlanToWatch;
     public int? Progress { get; set; }
 }

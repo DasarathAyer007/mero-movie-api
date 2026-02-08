@@ -10,10 +10,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace mero_movie_api.Services;
 
-public class AuthService(IUserRepository userRepository,IConfiguration configuration ) :IAuthService
+public class AuthService(IUserRepository userRepository, IConfiguration configuration) : IAuthService
 {
-    private readonly IUserRepository _userRepository=userRepository;
+    private readonly IUserRepository _userRepository = userRepository;
     private readonly IConfiguration _configuration = configuration;
+
     public async Task<User?> RegisterUser(RegisterUserDto user)
     {
         return await _userRepository.CreateUser(user);
@@ -23,7 +24,7 @@ public class AuthService(IUserRepository userRepository,IConfiguration configura
     {
         var user = await _userRepository.GetUserByEmail(email);
 
-        if (user ==null )
+        if (user == null)
         {
             return null;
         }
@@ -39,18 +40,17 @@ public class AuthService(IUserRepository userRepository,IConfiguration configura
 
         return null;
     }
-    
+
     public string GenerateJwtToken(User user)
     {
         var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                
-            };
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes( _configuration["jwt:Key"] ?? string.Empty));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwt:Key"] ?? string.Empty));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
@@ -62,5 +62,4 @@ public class AuthService(IUserRepository userRepository,IConfiguration configura
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
 }

@@ -12,7 +12,7 @@ public class AppDbContext : DbContext
 
     public DbSet<User> Users { get; set; }
     
-    public DbSet<Movie> Movies { get; set; }
+    public DbSet<Media> Media { get; set; }
     
     public DbSet<Collection> Collections { get; set; }
     
@@ -32,7 +32,7 @@ public class AppDbContext : DbContext
             .HasDefaultValue(WatchStatus.PlanToWatch);
 
         modelBuilder.Entity<WatchList>()
-            .HasIndex(x => new { x.UserId, x.MovieId })
+            .HasIndex(x => new { x.UserId, MovieId = x.MediaId })
             .IsUnique();
     }
     
